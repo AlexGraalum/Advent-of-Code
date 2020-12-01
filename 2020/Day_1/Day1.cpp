@@ -4,12 +4,13 @@
 
 using namespace std;
 
-void solution(int, int);
+int solutionP1(vector<int> );
+int solutionP2(vector<int> );
 
 int main() {
      ifstream reportFile;
      vector<int> report;
-     int temp;
+     int temp, solution1 = 0, solution2 = 0;
 
      reportFile.open("Expense_Report.txt");
      if (reportFile.is_open()) {
@@ -22,25 +23,64 @@ int main() {
           return -1;
      }
      reportFile.close();
-     for (size_t i = 0; i < report.size()-1; i++) {
-          for (size_t j = 1; j < report.size(); j++) {
-               temp = report[i] + report[j];
-               switch (temp) {
-                    case 2020:
-                         solution(report[i], report[j]);
-                         return 0;
-                    default:
-                         cout << report[i] << " + " << report[j] << " != 2020\n";
-                         break;
-               }
-          }
+
+     solution1 = solutionP1(report);
+     if (solution1 != 0) {
+          cout << "Puzzle 1 completed successfully with result: " << solution1 << endl;
+     }
+     else {
+          cout << "Puzzle 1 did not complete successfully.\n";
+     }
+     
+     solution2 = solutionP2(report);
+     if (solution2 != 0) {
+          cout << "Puzzle 2 completed successfully with result: " << solution2 << endl;
+     }
+     else {
+          cout << "Puzzle 2 did not complete successfully.\n";
      }
 
      return 0;
 }
 
-void solution(int x, int y) {
-     int product = x * y;
-     cout << x << " + " << y << " = 2020\n";
-     cout << x << " * " << y << " = " << product << endl;
+int solutionP1(vector<int> report) {
+     int temp;
+     for (size_t i = 0; i < report.size() - 1; i++) {
+          for (size_t j = i + 1; j < report.size(); j++) {
+               temp = report[i] + report[j];
+               switch (temp) {
+               case 2020:
+                    temp = report[i] * report[j];
+                    cout << report[i] << " + " << report[j] << " = 2020\n";
+                    cout << report[i] << " * " << report[j] << " = " << temp << endl;
+                    return temp;
+               default:
+                    //cout << report[i] << " + " << report[j] << " != 2020\n";
+                    break;
+               }
+          }
+     }
+     return 0;
+}
+
+int solutionP2(vector<int> report) {
+     int temp;
+     for (size_t i = 0; i < report.size() - 2; i++) {
+          for (size_t j = i+1; j < report.size() - 1; j++) {
+               for (size_t k = j + 1; k < report.size(); k++) {
+                    temp = report[i] + report[j] + report[k];
+                    switch (temp) {
+                         case 2020:
+                              temp = report[i] * report[j] * report[k];
+                              cout << report[i] << " + " << report[j] << " + " << report[k] << " = 2020\n";
+                              cout << report[i] << " * " << report[j] << " * " << report[k] << " = " << temp << endl;
+                              return temp;
+                         default:
+                              //cout << report[i] << " + " << report[j] << " + " << report[k] << " != 2020\n";
+                              break;
+                    }
+               }
+          }
+     }
+     return 0;
 }
